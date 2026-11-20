@@ -11,6 +11,13 @@ import android.os.BatteryManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.wifi.WifiManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.os.Build;
+import android.telephony.SignalStrength;
+import android.telephony.SubscriptionManager;
+import android.telephony.TelephonyManager;
 import android.widget.RemoteViews;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -36,7 +43,7 @@ public class CyberWidget extends AppWidgetProvider {
    ActivityManager.MemoryInfo info=new ActivityManager.MemoryInfo();am.getMemoryInfo(info);
    v.setTextViewText(R.id.ram,"RAM "+((info.totalMem-info.availMem)*100/info.totalMem)+"%");
   } catch(Exception e) {v.setTextViewText(R.id.ram,"RAM --");}
-  v.setTextViewText(R.id.signal,signal(c));
+  updateSignal(c, v);
   v.setTextViewText(R.id.updated,"↻ "+new SimpleDateFormat("HH:mm",Locale.getDefault()).format(new Date())+" · perbarui");
   Intent refresh=new Intent(c,CyberWidget.class);
   refresh.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
@@ -45,20 +52,57 @@ public class CyberWidget extends AppWidgetProvider {
   v.setOnClickPendingIntent(R.id.updated,pi);
   m.updateAppWidget(id,v);
  }
- private static String signal(Context c) {
+ private static void updateSignal(Context context, RemoteViews views) {
+  String label = "Offline";
+  int level = -1;
   try {
-   ConnectivityManager cm=(ConnectivityManager)c.getSystemService(Context.CONNECTIVITY_SERVICE);
-   NetworkCapabilities cap=cm.getNetworkCapabilities(cm.getActiveNetwork());
-   if(cap==null)return "▁▁▁▁ OFF";
-   if(cap.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
-    WifiManager wifi=(WifiManager)c.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-    int rssi=wifi.getConnectionInfo().getRssi();
-    if(rssi<=-100 || rssi>=0)return "▁▁▁▁ Wi-Fi";
-    int bars=WifiManager.calculateSignalLevel(rssi,5);
-    return (bars>=1?"▂":"▁")+(bars>=2?"▄":"▁")+(bars>=3?"▆":"▁")+(bars>=4?"█":"▁")+" Wi-Fi";
+   ConnectivityManager connectivity = context.getSystemService(ConnectivityManager.class);
+   NetworkCapabilities network = connectivity.getNetworkCapabilities(connectivity.getActiveNetwork());
+   if (network != null && network.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+    label = "Wi-Fi";
+    WifiManager wifi = context.getApplicationContext().getSystemService(WifiManager.class);
+    int rssi = wifi.getConnectionInfo().getRssi();
+    if (rssi != -127 && rssi < 0) {
+     level = WifiManager.calculateSignalLevel(rssi, 5);
+    }
+   } else if (network != null && network.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+    label = "Seluler";
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+     TelephonyManager phone = context.getSystemService(TelephonyManager.class);
+     int subscription = SubscriptionManager.getDefaultDataSubscriptionId();
+     if (subscription >= 0) {
+      phone = phone.createForSubscriptionId(subscription);
+     }
+     SignalStrength signal = phone.getSignalStrength();
+     if (signal != null) {
+      level = signal.getLevel();
+     }
+    }
+   } else if (network != null) {
+    label = "Online";
    }
-   if(cap.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR))return "▁▁▁▁ Seluler";
-   return "▁▁▁▁ Online";
-  }catch(Exception e){return "▁▁▁▁ --";}
+  } catch (SecurityException | UnsupportedOperationException ignored) {
+   // Keep the network label when the device cannot provide signal strength.
+  }
+
+  views.setTextViewText(R.id.signal, label);
+  views.setViewVisibility(R.id.signal_bars, level >= 0 ? android.view.View.VISIBLE : android.view.View.GONE);
+  if (level >= 0) {
+   views.setImageViewBitmap(R.id.signal_bars, drawSignalBars(level));
+   views.setContentDescription(R.id.signal_bars, "Sinyal " + level + " dari 4");
+  }
+ }
+
+ private static Bitmap drawSignalBars(int level) {
+  Bitmap bitmap = Bitmap.createBitmap(64, 48, Bitmap.Config.ARGB_8888);
+  Canvas canvas = new Canvas(bitmap);
+  Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+  for (int index = 0; index < 4; index++) {
+   paint.setColor(index < level ? 0xFF49F9A5 : 0xFF456658);
+   int left = index * 16;
+   int height = (index + 1) * 12;
+   canvas.drawRoundRect(left, 48 - height, left + 12, 48, 2, 2, paint);
+  }
+  return bitmap;
  }
 }
