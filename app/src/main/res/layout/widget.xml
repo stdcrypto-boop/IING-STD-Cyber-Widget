@@ -1,18 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent">
- <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:layout_gravity="center" android:orientation="vertical" android:gravity="center" android:padding="18dp" android:background="@drawable/cyber_circle">
-  <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="◈ IING STD" android:textStyle="bold" android:textColor="#FFFFFF" android:textSize="21sp"/>
-  <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="CYBER MONITOR" android:textStyle="bold" android:textColor="#00FF77" android:textSize="13sp"/>
-  <TextClock android:layout_width="wrap_content" android:layout_height="wrap_content" android:format12Hour="hh:mm:ss" android:format24Hour="HH:mm:ss" android:textColor="#FFFFFF" android:textSize="32sp" android:textStyle="bold" android:layout_marginTop="12dp"/>
-  <TextClock android:layout_width="wrap_content" android:layout_height="wrap_content" android:format12Hour="EEE, dd MMM yyyy" android:format24Hour="EEE, dd MMM yyyy" android:textColor="#D9FFE7" android:textSize="11sp"/>
-  <ImageView android:layout_width="65dp" android:layout_height="65dp" android:src="@drawable/portrait" android:contentDescription="Foto profil" android:layout_marginTop="8dp"/>
-  <TextView android:id="@+id/network" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="📶 Memeriksa jaringan" android:textColor="#00FF77" android:textSize="12sp"/>
-  <TextView android:id="@+id/signal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Sinyal: --" android:textColor="#00FFCC" android:textSize="11sp"/>
-  <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center" android:layout_marginTop="9dp">
-   <TextView android:id="@+id/battery" android:layout_width="0dp" android:layout_weight="1" android:gravity="center" android:layout_height="wrap_content" android:text="BAT --" android:textColor="#55FF55" android:textSize="13sp"/>
-   <TextView android:id="@+id/storage" android:layout_width="0dp" android:layout_weight="1" android:gravity="center" android:layout_height="wrap_content" android:text="RAM --" android:textColor="#00DDFF" android:textSize="13sp"/>
-   <TextView android:id="@+id/temp" android:layout_width="0dp" android:layout_weight="1" android:gravity="center" android:layout_height="wrap_content" android:text="TEMP --" android:textColor="#FFB32C" android:textSize="13sp"/>
+ <LinearLayout android:layout_width="250dp" android:layout_height="250dp" android:layout_gravity="center" android:orientation="vertical" android:gravity="center" android:padding="16dp" android:background="@drawable/cyber_circle">
+  <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="◈ IING STD" android:textStyle="bold" android:textColor="#FFFFFF" android:textSize="17sp"/>
+  <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="CYBER MONITOR" android:textStyle="bold" android:textColor="#00FF77" android:textSize="11sp"/>
+  <TextClock android:layout_width="wrap_content" android:layout_height="wrap_content" android:format12Hour="hh:mm:ss" android:format24Hour="HH:mm:ss" android:textColor="#FFFFFF" android:textSize="27sp" android:textStyle="bold" android:layout_marginTop="4dp"/>
+  <TextClock android:layout_width="wrap_content" android:layout_height="wrap_content" android:format12Hour="EEE, dd MMM yyyy" android:format24Hour="EEE, dd MMM yyyy" android:textColor="#D9FFE7" android:textSize="10sp"/>
+  <LinearLayout android:layout_width="match_parent" android:layout_height="80dp" android:orientation="horizontal" android:gravity="center">
+   <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:gravity="center" android:orientation="vertical">
+    <LinearLayout android:layout_width="wrap_content" android:layout_height="25dp" android:gravity="bottom" android:orientation="horizontal">
+     <View android:id="@+id/bar1" android:layout_width="6dp" android:layout_height="7dp" android:layout_marginEnd="2dp" android:background="#00DDFF"/>
+     <View android:id="@+id/bar2" android:layout_width="6dp" android:layout_height="12dp" android:layout_marginEnd="2dp" android:background="#00DDFF"/>
+     <View android:id="@+id/bar3" android:layout_width="6dp" android:layout_height="18dp" android:layout_marginEnd="2dp" android:background="#00DDFF"/>
+     <View android:id="@+id/bar4" android:layout_width="6dp" android:layout_height="24dp" android:background="#00DDFF"/>
+    </LinearLayout>
+    <TextView android:id="@+id/network" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Seluler" android:textColor="#FFFFFF" android:textSize="11sp"/>
+    <TextView android:id="@+id/signal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="--/4" android:textColor="#00FF77" android:textSize="10sp"/>
+   </LinearLayout>
+   <ImageView android:layout_width="60dp" android:layout_height="60dp" android:src="@drawable/portrait" android:contentDescription="Foto profil"/>
+   <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:gravity="center" android:orientation="vertical">
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="◉" android:textColor="#00FF77" android:textSize="27sp"/>
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="CYBER" android:textColor="#FFFFFF" android:textSize="10sp"/>
+   </LinearLayout>
   </LinearLayout>
-  <TextView android:id="@+id/updated" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="↻ Sentuh untuk segarkan" android:textColor="#00FF77" android:textSize="10sp" android:layout_marginTop="10dp"/>
+  <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center">
+   <TextView android:id="@+id/battery" android:layout_width="0dp" android:layout_weight="1" android:gravity="center" android:layout_height="wrap_content" android:text="BAT --" android:textColor="#55FF55" android:textSize="11sp"/>
+   <TextView android:id="@+id/storage" android:layout_width="0dp" android:layout_weight="1" android:gravity="center" android:layout_height="wrap_content" android:text="RAM --" android:textColor="#00DDFF" android:textSize="11sp"/>
+   <TextView android:id="@+id/temp" android:layout_width="0dp" android:layout_weight="1" android:gravity="center" android:layout_height="wrap_content" android:text="--°C" android:textColor="#FFB32C" android:textSize="11sp"/>
+  </LinearLayout>
+  <TextView android:id="@+id/updated" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="↻ Perbarui" android:textColor="#00FF77" android:textSize="9sp" android:layout_marginTop="5dp"/>
  </LinearLayout>
 </FrameLayout>
